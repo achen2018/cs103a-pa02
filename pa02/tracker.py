@@ -36,7 +36,9 @@ from category import Category
 from transactions import Transaction
 import sys
 
+
 transactions = Transaction('tracker.db')
+
 category = Category('tracker.db')
 
 
@@ -59,6 +61,7 @@ menu = '''
 
 def process_choice(choice):
     category = Category('tracker.db')
+
     if choice=='0':
         return
     elif choice=='1':
@@ -76,6 +79,7 @@ def process_choice(choice):
         desc = input("new category description: ")
         cat = {'name':name, 'desc':desc}
         category.update(rowid,cat)
+
     elif choice=='4':
         trans = transactions.select_all()
         print_transactions(trans)
@@ -90,6 +94,12 @@ def process_choice(choice):
     elif choice=='6':
         rowid = int(input("rowid: "))
         transactions.delete(rowid)
+    elif choice == '7':
+        result = transactions.sumByDate()
+        print(result)
+    elif choice == '8':
+        print("Currently being implemented")
+
     else:
         print("choice",choice,"not yet implemented")
 

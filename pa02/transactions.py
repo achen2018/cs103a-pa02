@@ -27,6 +27,7 @@ class Transaction():
         cur = con.cursor()
         cur.execute('''CREATE TABLE IF NOT EXISTS transactions
                     ('item #' text, amount int, category text, date text, description text)''')
+
         con.commit()
         con.close()
         self.dbfile = dbfile
@@ -43,7 +44,7 @@ class Transaction():
     
     def add(self,item):
         ''' add a transaction to the transactions table.
-            this returns the item# of the inserted element
+            this returns the item of the inserted element
         '''
         con= sqlite3.connect(self.dbfile)
         cur = con.cursor()
@@ -56,7 +57,8 @@ class Transaction():
         return last_rowid[0]
 
     def delete(self,rowid):
-        ''' this removes a transaction from the transactions table.
+        ''' deletes a row to the transactions table.
+            this returns the rowid of the deleted element
         '''
         con= sqlite3.connect(self.dbfile)
         cur = con.cursor()
@@ -65,3 +67,18 @@ class Transaction():
         ''',(rowid,))
         con.commit()
         con.close()
+
+    def sumByDate(self, newestFirst = True):
+        ## not yet completed or tested
+        ## Waiting on full add functionality to test this
+        '''Summarizes the transaction by the date (newest first by default)'''
+        orderString = " desc"
+        if not newestFirst:
+            orderString = ""
+        con = sqlite3.connect(self.dbfile)
+        cur = con.cursor()
+        cur.execute("select * from transactions order by date" + orderString)
+        result = cur.fetchall()
+        con.commit()
+        con.close()
+        return result
