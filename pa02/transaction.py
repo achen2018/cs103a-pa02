@@ -26,7 +26,8 @@ class Transaction():
         con= sqlite3.connect(dbfile)
         cur = con.cursor()
         cur.execute('''CREATE TABLE IF NOT EXISTS transactions
-                    (item# int, amount int, category text, date text, desc text)''')
+                    (item_num int, amount int, category text, date text, desc text)''')
+        # I made item# into item_num because it would say 'unrecognized token: "#"'
         con.commit()
         con.close()
         self.dbfile = dbfile
@@ -68,13 +69,28 @@ class Transaction():
         return last_rowid[0]
 
     def delete(self,rowid):
-        ''' add a category to the categories table.
-            this returns the rowid of the inserted element
+        ''' deletes a row to the transactions table.
+            this returns the rowid of the deleted element
         '''
         con= sqlite3.connect(self.dbfile)
         cur = con.cursor()
-        cur.execute('''DELETE FROM categories
+        cur.execute('''DELETE FROM transactions
                        WHERE rowid=(?);
         ''',(rowid,))
         con.commit()
         con.close()
+
+    def sumByDate(self, newestFirst = True):
+        ## not yet completed or tested
+        ## Waiting on full add functionality to test this
+        '''Summarizes the transaction by the date (newest first by default)'''
+        orderString = " desc"
+        if not newestFirst:
+            orderString = ""
+        con = sqlite3.connect(self.dbfile)
+        cur = con.cursor()
+        cur.execute("select * from transactions order by date" + orderString)
+        result = cur.fetchall()
+        con.commit()
+        con.close()
+        return result

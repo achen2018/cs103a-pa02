@@ -34,8 +34,9 @@ could be replaced with PostgreSQL or Pandas or straight python lists
 #from transactions import Transaction
 from category import Category
 import sys
+import transaction
 
-#transactions = Transaction('tracker.db')
+transactions = transaction.Transaction('tracker.db')
 category = Category('tracker.db')
 
 
@@ -60,7 +61,6 @@ menu = '''
 
 
 def process_choice(choice):
-
     if choice=='0':
         return
     elif choice=='1':
@@ -78,6 +78,11 @@ def process_choice(choice):
         desc = input("new category description: ")
         cat = {'name':name, 'desc':desc}
         category.update(rowid,cat)
+    elif choice == '7':
+        result = transactions.sumByDate()
+        print(result)
+    elif choice == '8':
+        print("Currently being implemented")
     else:
         print("choice",choice,"not yet implemented")
 
