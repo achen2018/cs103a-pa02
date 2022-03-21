@@ -9,6 +9,7 @@ This app will store the data in a SQLite database ~/tracker.db
 
 '''
 import sqlite3
+import datetime
 
 def to_tran_dict(tran_tuple):
     ''' tran is a transaction tuple ('item #','amount','category','date','description')'''
@@ -81,16 +82,31 @@ class Transaction():
         con.commit()
         con.close()
 
-    def sumByDate(self, newestFirst = True):
-        ## not yet completed or tested
-        ## Waiting on full add functionality to test this
-        '''Summarizes the transaction by the date (newest first by default)'''
+    def sumByDate(self, recentFirst = True):
+        '''Summarizes the transaction by the date (recent first by default)
+            @author Angelo Cataldo'''
         orderString = " desc"
-        if not newestFirst:
+        if not recentFirst:
             orderString = ""
         con = sqlite3.connect(self.dbfile)
         cur = con.cursor()
         cur.execute("select * from transactions order by date" + orderString)
+        result = cur.fetchall()
+        con.commit()
+        con.close()
+        return result
+    
+    def sumByMonth(self, janFirst = False):
+        '''Summarizes the transaction by the month (January->Dec by default)
+            If there is a tie, the entry in an earlier row goes first
+            @author Angelo Cataldo'''
+        orderString = " desc"
+        if not janFirst:
+            orderString = ""
+        con = sqlite3.connect(self.dbfile)
+        cur = con.cursor()
+        #yyyymmdd
+        cur.execute("select * from transactions order by SUBSTRING(date,5,2)" + orderString)
         result = cur.fetchall()
         con.commit()
         con.close()

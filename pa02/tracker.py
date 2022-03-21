@@ -86,7 +86,7 @@ def process_choice(choice):
         item=int(input("item #: "))
         amount=int(input("amount: "))    
         category=input("transaction category name: ") 
-        date = input("transaction date mm/dd/yy: ")   
+        date = input("transaction date yyyymmdd: ")   
         desc = input("transaction description: ")
         tran = {'item #':item, 'amount':amount, 'category':category, 'date':date, 'description':desc}
         transactions.add(tran)
@@ -95,9 +95,14 @@ def process_choice(choice):
         transactions.delete(rowid)
     elif choice == '7':
         result = transactions.sumByDate()
-        print(result)
+        for i in range(len(result)):
+            num = i + 1
+            print(str(num) + ". " + str(result[i]))
     elif choice == '8':
-        print("Currently being implemented")
+        result = transactions.sumByMonth()
+        for i in range(len(result)):
+            num = i + 1
+            print(str(num) + ". " + str(result[i]))
 
     else:
         print("choice",choice,"not yet implemented")
