@@ -98,7 +98,7 @@ class Transaction():
     
     def sumByMonth(self, janFirst = False):
         '''Summarizes the transaction by the month (January->Dec by default)
-            If there is a tie, the entry in an earlier row goes first
+            If there is a month tie (same month), the entry in an earlier row goes first
             @author Angelo Cataldo'''
         orderString = " desc"
         if not janFirst:

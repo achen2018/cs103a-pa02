@@ -2,7 +2,6 @@
 test_categories runs unit and integration tests on the category module
 '''
 
-from ast import FloorDiv
 import pytest
 from transactions import Transaction, to_tran_dict
 
@@ -16,6 +15,31 @@ def empty_db(dbfile):
     ''' create an empty database '''
     db = Transaction(dbfile)
     yield db
+
+@pytest.fixture
+def proper_dates_db(empty_db):
+    '''creates a small database with the desired date format (yyyymmdd), and tears it down later
+    @author Angelo Cataldo'''
+    tran1 = {'item #':1002,'amount':20,'category':'food','date':'20220314','description':'fresh food'}
+    tran2 = {'item #':1003,'amount':30,'category':'donation','date':'20220310','description':'charity'}
+    tran3 = {'item #':1004,'amount':40,'category':'window','date':'20220324','description':'broken glass'}
+    tran4 = {'item #':1005,'amount':50,'category':'angelo','date':'20180101','description':'angelo'}
+    tran5 = {'item #':1006,'amount':60,'category':'angelo2','date':'20230230','description':'angelo2'}
+    tran6 = {'item #':1007,'amount':50,'category':'angelo3','date':'19900815','description':'angelo3'}
+    id1=empty_db.add(tran1)
+    id2=empty_db.add(tran2)
+    id3=empty_db.add(tran3)
+    id4=empty_db.add(tran4)
+    id5=empty_db.add(tran5)
+    id6=empty_db.add(tran6)
+    yield empty_db
+    empty_db.delete(id6)
+    empty_db.delete(id5)
+    empty_db.delete(id4)
+    empty_db.delete(id3)
+    empty_db.delete(id2)
+    empty_db.delete(id1)
+
 
 @pytest.fixture
 def small_db(empty_db):
@@ -107,3 +131,27 @@ def test_delete(med_db):
     assert len(trans0)==len(trans2)
     assert len(trans2) == len(trans1)-1
 
+@pytest.mark.summarize
+def test_sum_by_date(proper_dates_db):
+    ''' @author Angelo Cataldo
+    tests the sumByDate method '''
+    result = proper_dates_db.sumByDate()
+    for i in range(len(result)):
+        if (i == len(result)-1):
+            return
+        date = result[i][3]
+        nextDate = result[i+1][3]
+        assert date >= nextDate
+
+@pytest.mark.summarize
+def test_sum_by_month(proper_dates_db):
+    ''' @author Angelo Cataldo 
+    tests the sumByMonth method'''
+    result = proper_dates_db.sumByMonth()
+    for i in range(len(result)):
+        if (i >= len(result)-1):
+            continue
+        #yyyymmdd
+        month = result[i][3][4:6]
+        nextMonth = result[i+1][3][4:6]
+        assert month <= nextMonth

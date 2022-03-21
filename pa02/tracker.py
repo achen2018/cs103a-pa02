@@ -95,14 +95,10 @@ def process_choice(choice):
         transactions.delete(rowid)
     elif choice == '7':
         result = transactions.sumByDate()
-        for i in range(len(result)):
-            num = i + 1
-            print(str(num) + ". " + str(result[i]))
+        print_list_with_nums(result)
     elif choice == '8':
         result = transactions.sumByMonth()
-        for i in range(len(result)):
-            num = i + 1
-            print(str(num) + ". " + str(result[i]))
+        print_list_with_nums(result)
 
     else:
         print("choice",choice,"not yet implemented")
@@ -146,6 +142,11 @@ def print_categories(cats):
     print('-'*45)
     for cat in cats:
         print_category(cat)
+
+def print_list_with_nums(list):
+    for i in range(len(list)):
+        num = i + 1
+        print(str(num) + ". " + str(list[i]))
 
 
 # here is the main call!
