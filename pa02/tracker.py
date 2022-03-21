@@ -31,11 +31,12 @@ could be replaced with PostgreSQL or Pandas or straight python lists
 
 '''
 
-#from transactions import Transaction
+
 from category import Category
+from transactions import Transaction
 import sys
 
-#transactions = Transaction('tracker.db')
+transactions = Transaction('tracker.db')
 category = Category('tracker.db')
 
 
@@ -56,11 +57,8 @@ menu = '''
 11. print this menu
 '''
 
-
-
-
 def process_choice(choice):
-
+    category = Category('tracker.db')
     if choice=='0':
         return
     elif choice=='1':
@@ -78,6 +76,20 @@ def process_choice(choice):
         desc = input("new category description: ")
         cat = {'name':name, 'desc':desc}
         category.update(rowid,cat)
+    elif choice=='4':
+        trans = transactions.select_all()
+        print_transactions(trans)
+    elif choice=='5':
+        item=int(input("item #: "))
+        amount=int(input("amount: "))    
+        category=input("transaction category name: ") 
+        date = input("transaction date mm/dd/yy: ")   
+        desc = input("transaction description: ")
+        tran = {'item #':item, 'amount':amount, 'category':category, 'date':date, 'description':desc}
+        transactions.add(tran)
+    elif choice=='6':
+        rowid = int(input("rowid: "))
+        transactions.delete(rowid)
     else:
         print("choice",choice,"not yet implemented")
 
@@ -105,12 +117,12 @@ def print_transactions(items):
         print('no items to print')
         return
     print('\n')
-    print("%-10s %-10d %-10s %-10d %-30s"%(
+    print((
         'item #','amount','category','date','description'))
     print('-'*40)
     for item in items:
         values = tuple(item.values()) 
-        print("%-10s %-10d %-10s %-10d %-30s"%values)
+        print(values)
 
 def print_category(cat):
     print("%-3d %-10s %-30s"%(cat['rowid'],cat['name'],cat['desc']))
