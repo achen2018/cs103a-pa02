@@ -43,7 +43,9 @@ class Transaction():
         return to_tran_dict_list(tuples)
     
     def add(self,item):
-        ''' add a transaction to the transactions table.
+        ''' 
+            Su Lei Yadanar
+            add a transaction to the transactions table.
             this returns the item of the inserted element
         '''
         con= sqlite3.connect(self.dbfile)
@@ -57,7 +59,9 @@ class Transaction():
         return last_rowid[0]
 
     def delete(self,rowid):
-        ''' deletes a row to the transactions table.
+        ''' 
+            Su Lei Yadanar
+            deletes a row to the transactions table.
             this returns the rowid of the deleted element
         '''
         con= sqlite3.connect(self.dbfile)
