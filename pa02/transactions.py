@@ -12,7 +12,7 @@ import sqlite3
 
 def to_tran_dict(tran_tuple):
     ''' tran is a transaction tuple ('item #','amount','category','date','description')'''
-    tran = {'row id':tran_tuple[0],'item #':tran_tuple[1], 'amount':tran_tuple[2], 'category':tran_tuple[3], 'date':tran_tuple[4],'description':tran_tuple[5]}
+    tran = {'rowid':tran_tuple[0],'item #':tran_tuple[1], 'amount':tran_tuple[2], 'category':tran_tuple[3], 'date':tran_tuple[4],'description':tran_tuple[5]}
     return tran
 
 def to_tran_dict_list(tran_tuples):
@@ -32,6 +32,15 @@ class Transaction():
         con.close()
         self.dbfile = dbfile
 
+    def select_one(self,rowid):
+        ''' return a category with a specified rowid '''
+        con= sqlite3.connect(self.dbfile)
+        cur = con.cursor()
+        cur.execute("SELECT rowid,* from transactions where rowid=(?)",(rowid,) )
+        tuples = cur.fetchall()
+        con.commit()
+        con.close()
+        return to_tran_dict(tuples[0])
     def select_all(self):
         ''' return all of the transactions as a list of dicts.'''
         con= sqlite3.connect(self.dbfile)
@@ -44,7 +53,7 @@ class Transaction():
     
     def add(self,item):
         ''' 
-            Su Lei Yadanar
+            @author Su Lei Yadanar
             add a transaction to the transactions table.
             this returns the item of the inserted element
         '''
@@ -60,7 +69,7 @@ class Transaction():
 
     def delete(self,rowid):
         ''' 
-            Su Lei Yadanar
+            @author Su Lei Yadanar
             deletes a row to the transactions table.
             this returns the rowid of the deleted element
         '''

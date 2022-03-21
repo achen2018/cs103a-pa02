@@ -44,7 +44,7 @@ def med_db(small_db):
                'date':'date '+s,
                'description':'description '+s,
                 }
-        rowid = small_db.add(cat)
+        rowid = small_db.add(tran)
         rowids.append(rowid)
 
     yield small_db
@@ -67,15 +67,19 @@ def test_to_tran_dict():
 
 @pytest.mark.add
 def test_add(med_db):
-    ''' add a transaction to db, the select it, then delete it'''
+    ''' 
+        @author Su Lei Yadanar
+        add a transaction to db, then select it, then delete it
+    '''
 
     tran0 = {'item #':1002,'amount':20,'category':'food','date':'03/14/2022','description':'fresh food'}
-    tran0 = med_db.select_all()
+    trans0 = med_db.select_all()
     rowid = med_db.add(tran0)
     trans1 = med_db.select_all()
-    assert len(trans1) == len(tran0) + 1
+    assert len(trans1) == len(trans0) + 1
     tran1 = med_db.select_one(rowid)
-    assert tran1['item #']==tran0['item #']
+   
+    assert tran1['item #']==str(tran0['item #'])
     assert tran1['amount']==tran0['amount']
     assert tran1['category']==tran0['category']
     assert tran1['date']==tran0['date']
@@ -84,19 +88,22 @@ def test_add(med_db):
 
 @pytest.mark.delete
 def test_delete(med_db):
-    ''' add a transaction to db, delete it, and see that the size changes'''
+    ''' 
+        @author Su Lei Yadanar
+        add a transaction to db, delete it, and see that the size changes
+    '''
     # first we get the initial table
-    cats0 = med_db.select_all()
+    trans0 = med_db.select_all()
 
     # then we add this transaction to the table and get the new list of rows
-    cat0 = {'item #':1002,'amount':20,'category':'food','date':'03/14/2022','description':'fresh food'}
-    rowid = med_db.add(cat0)
-    cats1 = med_db.select_all()
+    tran0 = {'item #':1002,'amount':20,'category':'food','date':'03/14/2022','description':'fresh food'}
+    rowid = med_db.add(tran0)
+    trans1 = med_db.select_all()
 
     # now we delete the category and again get the new list of rows
     med_db.delete(rowid)
-    cats2 = med_db.select_all()
+    trans2 = med_db.select_all()
 
-    assert len(cats0)==len(cats2)
-    assert len(cats2) == len(cats1)-1
+    assert len(trans0)==len(trans2)
+    assert len(trans2) == len(trans1)-1
 

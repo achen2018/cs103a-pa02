@@ -79,7 +79,6 @@ def process_choice(choice):
         desc = input("new category description: ")
         cat = {'name':name, 'desc':desc}
         category.update(rowid,cat)
-
     elif choice=='4':
         trans = transactions.select_all()
         print_transactions(trans)
