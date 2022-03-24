@@ -111,3 +111,15 @@ class Transaction():
         con.commit()
         con.close()
         return result
+
+    def totalTransactions(self):
+        '''Counts all the transactions in the database
+            An additional method
+            @author Andrew Chen'''
+        con = sqlite3.connect(self.dbfile)
+        cur = con.cursor()
+        cur.execute("SELECT COUNT (*) FROM transactions")
+        result = cur.fetchall()
+        con.commit()
+        con.close()
+        return result
