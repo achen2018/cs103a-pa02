@@ -43,10 +43,11 @@ def proper_dates_db(empty_db):
 
 @pytest.fixture
 def small_db(empty_db):
-    ''' create a small database, and tear it down later'''
-    tran1 = {'item #':1002,'amount':20,'category':'food','date':'03/14/2022','description':'fresh food'}
-    tran2 = {'item #':1003,'amount':30,'category':'donation','date':'03/10/2022','description':'charity'}
-    tran3 = {'item #':1004,'amount':40,'category':'window','date':'03/24/2022','description':'broken glass'}
+    ''' create a small database, and tear it down later
+    @author Su Lei Yadanar'''
+    tran1 = {'item #':1002,'amount':20,'category':'food','date':'20220314','description':'fresh food'}
+    tran2 = {'item #':1003,'amount':30,'category':'donation','date':'20220310','description':'charity'}
+    tran3 = {'item #':1004,'amount':40,'category':'window','date':'20220324','description':'broken glass'}
     id1=empty_db.add(tran1)
     id2=empty_db.add(tran2)
     id3=empty_db.add(tran3)
@@ -79,13 +80,13 @@ def med_db(small_db):
 
 @pytest.mark.simple
 def test_to_tran_dict():
-    ''' teting the to_cat_dict function '''
-    a = to_tran_dict((7,3,4,'food','02/13/2022','frozen food'))
+    ''' teting the to_tran_dict function '''
+    a = to_tran_dict((7,3,4,'food','20220314','frozen food'))
     assert a['rowid']==7
     assert a['item #']==3
     assert a['amount']==4
     assert a['category']=='food'
-    assert a['date']=='02/13/2022'
+    assert a['date']=='20220314'
     assert a['description']=='frozen food'
     assert len(a.keys())==6
 
@@ -96,7 +97,7 @@ def test_add(med_db):
         add a transaction to db, then select it, then delete it
     '''
 
-    tran0 = {'item #':1002,'amount':20,'category':'food','date':'03/14/2022','description':'fresh food'}
+    tran0 = {'item #':1002,'amount':20,'category':'food','date':'20220314','description':'fresh food'}
     trans0 = med_db.select_all()
     rowid = med_db.add(tran0)
     trans1 = med_db.select_all()
@@ -120,7 +121,7 @@ def test_delete(med_db):
     trans0 = med_db.select_all()
 
     # then we add this transaction to the table and get the new list of rows
-    tran0 = {'item #':1002,'amount':20,'category':'food','date':'03/14/2022','description':'fresh food'}
+    tran0 = {'item #':1002,'amount':20,'category':'food','date':'20220314','description':'fresh food'}
     rowid = med_db.add(tran0)
     trans1 = med_db.select_all()
 

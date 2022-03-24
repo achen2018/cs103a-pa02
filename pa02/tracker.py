@@ -26,24 +26,16 @@ In place of SQL queries, we will have method calls.
 
 This app will store the data in a SQLite database ~/tracker.db
 
-Note the actual implementation of the ORM is hidden and so it 
+Note the actual implementation of the ORM is hidden and so it
 could be replaced with PostgreSQL or Pandas or straight python lists
 
 '''
-
-
 from category import Category
 from transactions import Transaction
 import sys
 
 
-transactions = Transaction('tracker.db')
-
-category = Category('tracker.db')
-
-
 # here is the menu for the tracker app
-
 menu = '''
 0. quit
 1. show categories
@@ -58,10 +50,10 @@ menu = '''
 10. summarize transactions by category
 11. print this menu
 '''
-
 def process_choice(choice):
+    '''Menu Choices'''
     category = Category('tracker.db')
-
+    transactions=Transaction('tracker.db')
     if choice=='0':
         return
     elif choice=='1':
@@ -84,11 +76,11 @@ def process_choice(choice):
         print_transactions(trans)
     elif choice=='5':
         item=int(input("item #: "))
-        amount=int(input("amount: "))    
-        category=input("transaction category name: ") 
-        date = input("transaction date yyyymmdd: ")   
+        amount=int(input("amount: "))
+        category=input("transaction category name: ")
+        date = input("transaction date yyyymmdd: ")
         desc = input("transaction description: ")
-        tran = {'item #':item, 'amount':amount, 'category':category, 'date':date, 'description':desc}
+        tran = {'item #':item,'amount':amount, 'category':category, 'date':date, 'description':desc}
         transactions.add(tran)
     elif choice=='6':
         rowid = int(input("rowid: "))
@@ -104,9 +96,7 @@ def process_choice(choice):
         print("choice",choice,"not yet implemented")
 
     choice = input("> ")
-    return(choice)
-
-
+    return choice
 def toplevel():
     ''' handle the user's choice '''
 
@@ -120,7 +110,6 @@ def toplevel():
 #
 # here are some helper functions
 #
-
 def print_transactions(items):
     ''' print the transactions '''
     if len(items)==0:
@@ -131,7 +120,7 @@ def print_transactions(items):
         'item #','amount','category','date','description'))
     print('-'*40)
     for item in items:
-        values = tuple(item.values()) 
+        values = tuple(item.values())
         print(values)
 
 def print_category(cat):
@@ -147,9 +136,6 @@ def print_list_with_nums(list):
     for i in range(len(list)):
         num = i + 1
         print(str(num) + ". " + str(list[i]))
-
-
 # here is the main call!
 
 toplevel()
-
