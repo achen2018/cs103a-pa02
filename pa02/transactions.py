@@ -111,3 +111,15 @@ class Transaction():
         con.commit()
         con.close()
         return result
+
+    def printTransactions(self):
+        '''Prints all the transactions
+            @author Andrew Chen'''
+        con = sqlite3.connect(self.dbfile)
+        cur = con.cursor()
+        cur.execute("select * from transaction order by item #")
+        result = cur.fetchall()
+        con.commit()
+        con.close()
+        return result
+        )
