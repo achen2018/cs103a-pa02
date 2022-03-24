@@ -91,6 +91,8 @@ def process_choice(choice):
     elif choice == '8':
         result = transactions.sumByMonth()
         print_list_with_nums(result)
+    elif choice == '11':
+        print(menu)
 
     else:
         print("choice",choice,"not yet implemented")
@@ -136,6 +138,7 @@ def print_list_with_nums(list):
     for i in range(len(list)):
         num = i + 1
         print(str(num) + ". " + str(list[i]))
+
 # here is the main call!
 
 toplevel()
