@@ -11,50 +11,50 @@ def dbfile(tmpdir):
     return tmpdir.join('test_tracker.db')
 
 @pytest.fixture
-def empty_db(dbfile):
+def empty_db1(dbfile):
     ''' create an empty database '''
     db = Transaction(dbfile)
     yield db
 
 @pytest.fixture
-def proper_dates_db(empty_db):
+def proper_dates_db(empty_db1):
     '''creates a small database with the desired date format (yyyymmdd), and tears it down later
     @author Angelo Cataldo'''
-    tran1 = {'item #':1002,'amount':20,'category':'food','date':'20220314','description':'fresh food'}
-    tran2 = {'item #':1003,'amount':30,'category':'donation','date':'20220310','description':'charity'}
-    tran3 = {'item #':1004,'amount':40,'category':'window','date':'20220324','description':'broken glass'}
-    tran4 = {'item #':1005,'amount':50,'category':'angelo','date':'20180101','description':'angelo'}
-    tran5 = {'item #':1006,'amount':60,'category':'angelo2','date':'20230230','description':'angelo2'}
-    tran6 = {'item #':1007,'amount':50,'category':'angelo3','date':'19900815','description':'angelo3'}
-    id1=empty_db.add(tran1)
-    id2=empty_db.add(tran2)
-    id3=empty_db.add(tran3)
-    id4=empty_db.add(tran4)
-    id5=empty_db.add(tran5)
-    id6=empty_db.add(tran6)
-    yield empty_db
-    empty_db.delete(id6)
-    empty_db.delete(id5)
-    empty_db.delete(id4)
-    empty_db.delete(id3)
-    empty_db.delete(id2)
-    empty_db.delete(id1)
+    tran1 = {'item #':102,'amount':20,'category':'food','date':'20220314','description':'food'}
+    tran2 = {'item #':103,'amount':30,'category':'donate','date':'20220310','description':'charity'}
+    tran3 = {'item #':104,'amount':40,'category':'window','date':'20220324','description':'glass'}
+    tran4 = {'item #':105,'amount':50,'category':'angelo','date':'20180101','description':'angelo'}
+    tran5 = {'item #':106,'amount':60,'category':'angelo2','date':'20230230','description':'angelo2'}
+    tran6 = {'item #':107,'amount':50,'category':'angelo3','date':'19900815','description':'angelo3'}
+    id1=empty_db1.add(tran1)
+    id2=empty_db1.add(tran2)
+    id3=empty_db1.add(tran3)
+    id4=empty_db1.add(tran4)
+    id5=empty_db1.add(tran5)
+    id6=empty_db1.add(tran6)
+    yield empty_db1
+    empty_db1.delete(id6)
+    empty_db1.delete(id5)
+    empty_db1.delete(id4)
+    empty_db1.delete(id3)
+    empty_db1.delete(id2)
+    empty_db1.delete(id1)
 
 
 @pytest.fixture
-def small_db(empty_db):
+def small_db(empty_db1):
     ''' create a small database, and tear it down later
     @author Su Lei Yadanar'''
-    tran1 = {'item #':1002,'amount':20,'category':'food','date':'20220314','description':'fresh food'}
-    tran2 = {'item #':1003,'amount':30,'category':'donation','date':'20220310','description':'charity'}
-    tran3 = {'item #':1004,'amount':40,'category':'window','date':'20220324','description':'broken glass'}
-    id1=empty_db.add(tran1)
-    id2=empty_db.add(tran2)
-    id3=empty_db.add(tran3)
-    yield empty_db
-    empty_db.delete(id3)
-    empty_db.delete(id2)
-    empty_db.delete(id1)
+    tran1 = {'item #':102,'amount':20,'category':'food','date':'20220314','description':'food'}
+    tran2 = {'item #':103,'amount':30,'category':'donation','date':'20220310','description':'charity'}
+    tran3 = {'item #':104,'amount':40,'category':'window','date':'20220324','description':'glass'}
+    id1=empty_db1.add(tran1)
+    id2=empty_db1.add(tran2)
+    id3=empty_db1.add(tran3)
+    yield empty_db1
+    empty_db1.delete(id3)
+    empty_db1.delete(id2)
+    empty_db1.delete(id1)
 
 @pytest.fixture
 def med_db(small_db):
@@ -92,18 +92,18 @@ def test_to_tran_dict():
 
 @pytest.mark.add
 def test_add(med_db):
-    ''' 
+    '''
         @author Su Lei Yadanar
         add a transaction to db, then select it, then delete it
     '''
 
-    tran0 = {'item #':1002,'amount':20,'category':'food','date':'20220314','description':'fresh food'}
+    tran0 = {'item #':102,'amount':20,'category':'food','date':'20220314','description':'food'}
     trans0 = med_db.select_all()
     rowid = med_db.add(tran0)
     trans1 = med_db.select_all()
     assert len(trans1) == len(trans0) + 1
     tran1 = med_db.select_one(rowid)
-   
+
     assert tran1['item #']==str(tran0['item #'])
     assert tran1['amount']==tran0['amount']
     assert tran1['category']==tran0['category']
@@ -113,7 +113,7 @@ def test_add(med_db):
 
 @pytest.mark.delete
 def test_delete(med_db):
-    ''' 
+    '''
         @author Su Lei Yadanar
         add a transaction to db, delete it, and see that the size changes
     '''
@@ -121,7 +121,7 @@ def test_delete(med_db):
     trans0 = med_db.select_all()
 
     # then we add this transaction to the table and get the new list of rows
-    tran0 = {'item #':1002,'amount':20,'category':'food','date':'20220314','description':'fresh food'}
+    tran0 = {'item #':1002,'amount':20,'category':'food','date':'20220314','description':'food'}
     rowid = med_db.add(tran0)
     trans1 = med_db.select_all()
 
@@ -138,21 +138,21 @@ def test_sum_by_date(proper_dates_db):
     tests the sumByDate method '''
     result = proper_dates_db.sumByDate()
     for i in range(len(result)):
-        if (i == len(result)-1):
+        if i == len(result)-1:
             return
         date = result[i][3]
-        nextDate = result[i+1][3]
-        assert date >= nextDate
+        next_date = result[i+1][3]
+        assert date >= next_date
 
 @pytest.mark.summarize
 def test_sum_by_month(proper_dates_db):
-    ''' @author Angelo Cataldo 
+    ''' @author Angelo Cataldo
     tests the sumByMonth method'''
     result = proper_dates_db.sumByMonth()
     for i in range(len(result)):
-        if (i >= len(result)-1):
+        if i >= len(result)-1:
             continue
         #yyyymmdd
         month = result[i][3][4:6]
-        nextMonth = result[i+1][3][4:6]
-        assert month <= nextMonth
+        next_month = result[i+1][3][4:6]
+        assert month <= next_month

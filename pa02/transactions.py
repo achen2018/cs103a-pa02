@@ -11,14 +11,14 @@ This app will store the data in a SQLite database ~/tracker.db
 import sqlite3
 import datetime
 
-def to_tran_dict(tran_tuple):
+def to_tran_dict(tran_tup):
     ''' tran is a transaction tuple ('item #','amount','category','date','description')'''
-    tran = {'rowid':tran_tuple[0],'item #':tran_tuple[1], 'amount':tran_tuple[2], 'category':tran_tuple[3], 'date':tran_tuple[4],'description':tran_tuple[5]}
+    tran = {'rowid':tran_tup[0],'item #':tran_tup[1], 'amount':tran_tup[2], 'category':tran_tup[3], 'date':tran_tup[4],'description':tran_tup[5]}
     return tran
 
-def to_tran_dict_list(tran_tuples):
+def to_tran_dict_list(tran_tup):
     ''' convert a list of transaction tuples into a list of dictionaries'''
-    return [to_tran_dict(tran) for tran in tran_tuples]
+    return [to_tran_dict(tran) for tran in tran_tup]
 
 class Transaction():
     ''' Transaction represents a table of transactions'''
@@ -51,9 +51,9 @@ class Transaction():
         con.commit()
         con.close()
         return to_tran_dict_list(tuples)
-    
+
     def add(self,item):
-        ''' 
+        '''
             @author Su Lei Yadanar
             add a transaction to the transactions table.
             this returns the item of the inserted element
@@ -69,7 +69,7 @@ class Transaction():
         return last_rowid[0]
 
     def delete(self,rowid):
-        ''' 
+        '''
             @author Su Lei Yadanar
             deletes a row to the transactions table.
             this returns the rowid of the deleted element
@@ -95,7 +95,7 @@ class Transaction():
         con.commit()
         con.close()
         return result
-    
+
     def sumByMonth(self, janFirst = False):
         '''Summarizes the transaction by the month (January->Dec by default)
             If there is a month tie (same month), the entry in an earlier row goes first
