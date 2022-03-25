@@ -9,7 +9,6 @@ This app will store the data in a SQLite database ~/tracker.db
 
 '''
 import sqlite3
-import datetime
 
 def to_tran_dict(tran_tup):
     ''' tran is a transaction tuple ('item #','amount','category','date','description')'''

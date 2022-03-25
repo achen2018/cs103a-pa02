@@ -1,7 +1,6 @@
 '''
 test_categories runs unit and integration tests on the category module
 '''
-
 import pytest
 from transactions import Transaction, to_tran_dict
 
@@ -164,7 +163,7 @@ def test_sum_by_year(proper_dates_db):
     result = proper_dates_db.sumByYear(2022)
     assert len(result) == 3
     for row in result:
-        assert str(row[3])[0:4] == str(2022) 
+        assert str(row[3])[0:4] == str(2022)
         # basically i want each row that comes out to be from 2022
         # we are looking at the date string
 
@@ -175,8 +174,8 @@ def test_sum_by_category(proper_dates_db):
     result = proper_dates_db.sumByCategory('food')
     assert len(result) == 1
     for row in result:
-        assert str(row[2]) == "food" 
-    
+        assert str(row[2]) == "food"
+
 
 @pytest.fixture
 def test_total_per_month(proper_dates_db):
