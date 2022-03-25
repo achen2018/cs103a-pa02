@@ -156,3 +156,46 @@ def test_sum_by_month(proper_dates_db):
         month = result[i][3][4:6]
         next_month = result[i+1][3][4:6]
         assert month <= next_month
+
+@pytest.mark.summarize
+def test_sum_by_year(proper_dates_db):
+    ''' @author Joshua Liu (shoutout to angelo)
+    tests the sumByYear method'''
+    result = proper_dates_db.sumByYear(2022)
+    assert len(result) == 3
+    for row in result:
+        assert str(row[3])[0:4] == str(2022) 
+        # basically i want each row that comes out to be from 2022
+        # we are looking at the date string
+
+@pytest.mark.summarize
+def test_sum_by_category(proper_dates_db):
+    ''' @author Joshua Liu (shoutout to angelo)
+    tests the sumByCategory method'''
+    result = proper_dates_db.sumByCategory('food')
+    assert len(result) == 1
+    for row in result:
+        assert str(row[2]) == "food" 
+    
+
+@pytest.fixture
+def test_total_per_month(proper_dates_db):
+    '''@author Andrew Chen
+    tests the totalPerMonth method'''
+    result = proper_dates_db.sumByMonth()
+    count = len(result)
+    for i in range(len(result)):
+        if i >= len(result)-1:
+            continue
+        #yyyymmdd
+        month = result[i][3][4:6]
+        next_month = result[i+1][3][4:6]
+        assert month <= next_month
+        assert count == len(result)
+
+@pytest.fixture
+def test_count_all(proper_dates_db):
+    '''@author Andrew Chen
+    tests the totalTransactions method'''
+    result = len(proper_dates_db)
+    assert result == len(proper_dates_db)

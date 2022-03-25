@@ -111,3 +111,55 @@ class Transaction():
         con.commit()
         con.close()
         return result
+
+    def sumByYear(self, year):
+        '''Summarizes the transaction by the year
+            @author Joshua liu'''
+        con = sqlite3.connect(self.dbfile)
+        cur = con.cursor()
+        #yyyymmdd
+        cur.execute("select * from transactions where date LIKE '" + str(year) + "%'")  # beginning with date, substring didnt work
+        result = cur.fetchall()
+        con.commit()
+        con.close()
+        return result
+
+    def sumByCategory(self, cat):
+        '''Summarizes the transaction by the category
+            @author Joshua liu'''
+        con = sqlite3.connect(self.dbfile)
+        cur = con.cursor()
+        #yyyymmdd
+        cur.execute("select * from transactions where category LIKE '" + str(cat) + "'")  # no percent, exact match needed
+        result = cur.fetchall()
+        con.commit()
+        con.close()
+        return result
+
+    def totalTransactions(self):
+        '''Counts all the transactions in the database
+            An extra method
+            @author Andrew Chen'''
+        con = sqlite3.connect(self.dbfile)
+        cur = con.cursor()
+        cur.execute("SELECT COUNT (*) FROM transactions")
+        result = cur.fetchall()
+        con.commit()
+        con.close()
+        return result
+    
+    def totalPerMonth(self, janFirst = False):
+        '''Counts the number of transactions made each month (January->Dec by default)
+            An extra method
+            @author Andrew Chen'''
+        orderString = " desc"
+        if not janFirst:
+            orderString = ""
+        con = sqlite3.connect(self.dbfile)
+        cur = con.cursor()
+        #yyyymmdd
+        cur.execute("SELECT COUNT (*) FROM transactions GROUP BY SUBSTRING(date,5,2)" + orderString)
+        result = cur.fetchall()
+        con.commit()
+        con.close()
+        return result
