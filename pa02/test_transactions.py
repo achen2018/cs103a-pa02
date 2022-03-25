@@ -156,3 +156,25 @@ def test_sum_by_month(proper_dates_db):
         month = result[i][3][4:6]
         next_month = result[i+1][3][4:6]
         assert month <= next_month
+
+@pytest.mark.summarize
+def test_total_per_month(proper_dates_db):
+    '''@author Andrew Chen
+    tests the totalPerMonth method'''
+    result = proper_dates_db.sumByMonth()
+    count = len(result)
+    for i in range(len(result)):
+        if i >= len(result)-1:
+            continue
+        #yyyymmdd
+        month = result[i][3][4:6]
+        next_month = result[i+1][3][4:6]
+        assert month <= next_month
+        assert count == len(result)
+
+@pytest.mark.summarize
+def test_count_all(proper_dates_db):
+    '''@author Andrew Chen
+    tests the totalTransactions method'''
+    result = len(proper_dates_db)
+    assert result == len(proper_dates_db)

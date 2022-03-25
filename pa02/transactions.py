@@ -114,11 +114,26 @@ class Transaction():
 
     def totalTransactions(self):
         '''Counts all the transactions in the database
-            An additional method
+            An extra method
             @author Andrew Chen'''
         con = sqlite3.connect(self.dbfile)
         cur = con.cursor()
         cur.execute("SELECT COUNT (*) FROM transactions")
+        result = cur.fetchall()
+        con.commit()
+        con.close()
+        return result
+    
+    def totalPerMonth(self, janFirst = False):
+        '''Counts the number of transactions made each month (January->Dec by default)
+            @author Andrew Chen'''
+        orderString = " desc"
+        if not janFirst:
+            orderString = ""
+        con = sqlite3.connect(self.dbfile)
+        cur = con.cursor()
+        #yyyymmdd
+        cur.execute("SELECT COUNT (*) FROM transactions GROUP BY SUBSTRING(date,5,2)" + orderString)
         result = cur.fetchall()
         con.commit()
         con.close()
