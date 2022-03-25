@@ -112,6 +112,30 @@ class Transaction():
         con.close()
         return result
 
+    def sumByYear(self, year):
+        '''Summarizes the transaction by the year
+            @author Joshua liu'''
+        con = sqlite3.connect(self.dbfile)
+        cur = con.cursor()
+        #yyyymmdd
+        cur.execute("select * from transactions where date LIKE '" + str(year) + "%'")  # beginning with date, substring didnt work
+        result = cur.fetchall()
+        con.commit()
+        con.close()
+        return result
+
+    def sumByCategory(self, cat):
+        '''Summarizes the transaction by the category
+            @author Joshua liu'''
+        con = sqlite3.connect(self.dbfile)
+        cur = con.cursor()
+        #yyyymmdd
+        cur.execute("select * from transactions where category LIKE '" + str(cat) + "'")  # no percent, exact match needed
+        result = cur.fetchall()
+        con.commit()
+        con.close()
+        return result
+
     def totalTransactions(self):
         '''Counts all the transactions in the database
             An extra method

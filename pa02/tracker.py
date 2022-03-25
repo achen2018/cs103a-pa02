@@ -91,6 +91,22 @@ def process_choice(choice):
     elif choice == '8':
         result = transactions.sumByMonth()
         print_list_with_nums(result)
+    elif choice == '9':
+        year = input("Enter a Year to Summarize: ")
+        result = transactions.sumByYear(year)
+        totalQty = 0
+        for row in result:
+            totalQty = totalQty + row[1]
+        print("Total transactions moved in year " + str(year) + ": " + str(len(result)))
+        print("Total quantity moved in year " + str(year) + ": " + str(totalQty))
+    elif choice == '10':
+        cat = input("Enter a Category to Summarize: ")
+        result = transactions.sumByCategory(cat)
+        totalQty = 0
+        for row in result:
+            totalQty = totalQty + row[1]
+        print("Total transactions in category " + str(cat) + ": " + str(len(result)))
+        print("Total quantity moved in category " + str(cat) + ": " + str(totalQty))
     elif choice == '11':
         print(menu)
 
