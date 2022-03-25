@@ -75,6 +75,9 @@ def process_choice(choice):
         trans = transactions.select_all()
         print_transactions(trans)
     elif choice=='5':
+        '''@author Su Lei Yadanar
+            add transaction
+        '''
         item=int(input("item #: "))
         amount=int(input("amount: "))
         category=input("transaction category name: ")
@@ -83,6 +86,9 @@ def process_choice(choice):
         tran = {'item #':item,'amount':amount, 'category':category, 'date':date, 'description':desc}
         transactions.add(tran)
     elif choice=='6':
+        '''@author Su Lei Yadanar
+            delete transaction
+        '''
         rowid = int(input("rowid: "))
         transactions.delete(rowid)
     elif choice == '7':
