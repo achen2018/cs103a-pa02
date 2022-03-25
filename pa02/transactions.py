@@ -126,6 +126,7 @@ class Transaction():
     
     def totalPerMonth(self, janFirst = False):
         '''Counts the number of transactions made each month (January->Dec by default)
+            An extra method
             @author Andrew Chen'''
         orderString = " desc"
         if not janFirst:
