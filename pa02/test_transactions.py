@@ -157,7 +157,7 @@ def test_sum_by_month(proper_dates_db):
         next_month = result[i+1][3][4:6]
         assert month <= next_month
 
-@pytest.mark.summarize
+@pytest.fixture
 def test_total_per_month(proper_dates_db):
     '''@author Andrew Chen
     tests the totalPerMonth method'''
@@ -172,7 +172,7 @@ def test_total_per_month(proper_dates_db):
         assert month <= next_month
         assert count == len(result)
 
-@pytest.mark.summarize
+@pytest.fixture
 def test_count_all(proper_dates_db):
     '''@author Andrew Chen
     tests the totalTransactions method'''
